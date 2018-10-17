@@ -19,12 +19,27 @@ import StartInput from './Testing/MyInputs/StartInput'
 import PersonList from './Testing/PersonList/PersonList'
 import mainImage from "./assets/log.png";
 import faceImage from "./assets/face.png"
+import ModalView from './Testing/ModalView/ModalView'
 
 export default class App extends Component {
   state = {
       personName:[],
-    frontImage: mainImage
+    frontImage: mainImage,
+    selectedItem: null
   }
+  onDelete = () =>{
+    this.setState(prevState =>{
+      return{
+        personName: prevState.personName.filter(person =>{
+          return person.key !== prevState.selectedItem.key
+        }),
+        selectedItem:null
+      }
+
+    })
+    
+  }
+
   executeAdd = (person,age) =>{
     this.setState(prevState =>{
       return{
@@ -34,17 +49,33 @@ export default class App extends Component {
           age: age,
           image: faceImage
         }),
-      }
-    });
+      }    
+    });  
   }
-
+  itemPress = key => {
+    this.setState(prevState => {
+      return{
+      selectedItem: prevState.personName.find(person =>{
+        return person.key === key
+      })
+    }
+    })
+  }
+  closetheModal = () =>{
+    this.setState({
+      selectedItem: null
+    })
+  }
   render() {
     return (
       <View style={styles.container}>
+      <ModalView modalClose={this.closetheModal} selectedItem={this.state.selectedItem}
+      deleteThis={this.onDelete} 
+      />
       <Image style={styles.imageStyle} source={this.state.frontImage}/>
       <Text style={styles.textStyle}>LogIT App!</Text>
       <StartInput onDataAdded={this.executeAdd}/>
-      <PersonList persons={this.state.personName}/>
+      <PersonList persons={this.state.personName} onPressList={this.itemPress}/>
       </View>
       
     );

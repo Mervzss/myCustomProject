@@ -21,12 +21,14 @@ class Startinput extends Component{
         onEnter = () => {
             this.setState(prevState => {
                 return{
+                    personName:"",
+                    personAge:"",
                     buttonColor: prevState.buttonColor === "blue" ? "red":"blue"
                 }
             });
         //   alert(this.state.personAge);
-           if (this.state.personName.trim() === "" || typeof(parseInt(this.state.personAge)) === isNaN ){
-           alert(parseInt(this.state.personAge));
+           if (this.state.personName.trim() === ""){
+           alert("Input TextField");
             return;
           }
                       
@@ -40,7 +42,9 @@ class Startinput extends Component{
                 value={this.state.personName}/>
             </View>
             <View style={style.inputContainer}>
-                <TextInput keyboardType="numeric" style={style.textInputStyle} placeholder="Enter Age" onChangeText={this.updatedAge}/>
+                <TextInput keyboardType="numeric" style={style.textInputStyle} placeholder="Enter Age" onChangeText={this.updatedAge}
+                value={this.state.personAge}
+                />
              </View>
              <View style={style.buttonStyle}>
                 <Button title="Enter" color={this.state.buttonColor} onPress={this.onEnter}/>

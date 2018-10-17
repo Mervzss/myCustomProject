@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import { View,Text,StyleSheet,Image } from "react-native";
+import { View,Text,StyleSheet,Image,TouchableHighlight } from "react-native";
 
 const BaseList = props =>(
-    <View style={styles.containerStyle}>
+    <TouchableHighlight onPress={props.pressList} underlayColor="#ff4c9c">
+     <View style={styles.containerStyle}>
     <View>
     <Image resizeMode="cover" style={styles.imageStyle} source={props.faceImage}/>
     </View>
@@ -14,6 +15,8 @@ const BaseList = props =>(
     </View>
     
     </View>
+    </TouchableHighlight>
+    
 );
 
 const styles = StyleSheet.create({

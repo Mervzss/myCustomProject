@@ -8,13 +8,14 @@ const PersonList = props => {
          <FlatList 
          style={styles.container}
         data={props.persons}
-        renderItem={(info)=>(
-            <BaseList
-        persons={info.item.name}
-        Age={info.item.age}
-        faceImage={info.item.image}
+        renderItem={({item}, index)=>{
+           return <BaseList      
+        persons={item.name}
+        Age={item.age}
+        faceImage={item.image}
+        pressList ={()=> props.onPressList(item.key)}
         />
-        )}/>)
+        }}/>)
     // const personDataOutput = props.persons.map((data,i) =>(
     //     <BaseList
     //     persons={data}

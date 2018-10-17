@@ -1,6 +1,6 @@
 import {ADD_LOG,DELETE_LOG,PRESS_LOG,CLOSE_LOG} from './appActions'
 
-export const addDataLog = (name,age) =>{
+export const addDataLog = (name, age) =>{
     return{
         type:ADD_LOG,
         personName:name,

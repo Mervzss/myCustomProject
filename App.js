@@ -10,72 +10,40 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
-  TextInput,
+
   Image
 } from 'react-native';
 
 import StartInput from './Testing/MyInputs/StartInput'
 import PersonList from './Testing/PersonList/PersonList'
 import mainImage from "./assets/log.png";
-import faceImage from "./assets/face.png"
 import ModalView from './Testing/ModalView/ModalView'
+import { connect } from "react-redux";
+import { addDataLog,deleteDataLog,pressDataLog,closeDataLog } from "./ReduxFiles/Actions/actionIndex";
+class App extends Component {
 
-export default class App extends Component {
-  state = {
-      personName:[],
-    frontImage: mainImage,
-    selectedItem: null
-  }
   onDelete = () =>{
-    this.setState(prevState =>{
-      return{
-        personName: prevState.personName.filter(person =>{
-          return person.key !== prevState.selectedItem.key
-        }),
-        selectedItem:null
-      }
-
-    })
-    
-  }
-
-  executeAdd = (person,age) =>{
-    this.setState(prevState =>{
-      return{
-        personName: prevState.personName.concat({
-          key:Math.random(),
-          name: person,
-          age: age,
-          image: faceImage
-        }),
-      }    
-    });  
-  }
+    this.props.onDeleteData() 
+  };
+  executeAdd =(person, age)=>{
+    this.props.onDataAdded(person)
+  };
   itemPress = key => {
-    this.setState(prevState => {
-      return{
-      selectedItem: prevState.personName.find(person =>{
-        return person.key === key
-      })
-    }
-    })
-  }
+    this.props.onPressData(key)
+  };
   closetheModal = () =>{
-    this.setState({
-      selectedItem: null
-    })
-  }
+    this.props.onCloseData()
+  };
   render() {
     return (
       <View style={styles.container}>
-      <ModalView modalClose={this.closetheModal} selectedItem={this.state.selectedItem}
+      <ModalView modalClose={this.closetheModal} selectedItem={this.props.selectedItem}
       deleteThis={this.onDelete} 
       />
-      <Image style={styles.imageStyle} source={this.state.frontImage}/>
+      <Image style={styles.imageStyle} source={mainImage}/>
       <Text style={styles.textStyle}>LogIT App!</Text>
       <StartInput onDataAdded={this.executeAdd}/>
-      <PersonList persons={this.state.personName} onPressList={this.itemPress}/>
+      <PersonList persons={this.props.personName} onPressList={this.itemPress}/>
       </View>
       
     );
@@ -112,3 +80,20 @@ const styles = StyleSheet.create({
     height:30
   }
 });
+const dataProps = state =>
+{
+  return{
+    personName: state.personData.personName,
+  selectedItem: state.personData.selectedItem
+  }
+  
+}
+const dataAction = dispatch =>{
+  return{
+    onDataAdded: (person, age) => dispatch(addDataLog(person,age)),
+    onDeleteData: ()=> dispatch(deleteDataLog()),
+    onPressData: key => dispatch(pressDataLog(key)),
+    onCloseData:()=> dispatch(closeDataLog())
+  }
+}
+export default connect(dataProps,dataAction)(App);
